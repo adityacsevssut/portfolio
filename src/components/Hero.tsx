@@ -23,7 +23,7 @@ export function Hero() {
   const [isLoading, setIsLoading] = useState(false);
   const [paragraphText, setParagraphText] = useState("");
   const fullText = "initializing developer profile...";
-  const fullCommand = "cout << WhoIsAditya << endl;";
+  const fullCommand = "cout << WhoIsAditya ?? << endl;";
   const fullParagraph = "Hi! Everyone I'm Aditya Nahak, a passionate web developer and full-stack developer. I love building beautiful and functional web applications, with a strong foundation in DSA in C++ to solve complex problems efficiently.";
 
   // Title Typewriter State
@@ -60,14 +60,14 @@ export function Hero() {
     let i = 0;
     let cmdInterval: NodeJS.Timeout;
     let paraInterval: NodeJS.Timeout;
-    
+
     const typingInterval = setInterval(() => {
       if (i < fullText.length) {
         setText(fullText.slice(0, i + 1));
         i++;
       } else {
         clearInterval(typingInterval);
-        
+
         let k = 0;
         cmdInterval = setInterval(() => {
           if (k < fullCommand.length) {
@@ -76,7 +76,7 @@ export function Hero() {
           } else {
             clearInterval(cmdInterval);
             setIsLoading(true);
-            
+
             setTimeout(() => {
               setIsLoading(false);
               let j = 0;
@@ -93,7 +93,7 @@ export function Hero() {
         }, 50); // Fast typing for command
       }
     }, 50); // Fast typing for initial text
-    
+
     return () => {
       clearInterval(typingInterval);
       if (cmdInterval) clearInterval(cmdInterval);
@@ -171,7 +171,7 @@ export function Hero() {
                 />
               )}
             </div>
-            
+
             {text.length === fullText.length && (
               <div className="h-6 md:h-8 text-[var(--color-primary-neon)] font-mono text-base md:text-lg flex items-center justify-center">
                 {commandText}
@@ -184,7 +184,7 @@ export function Hero() {
                 )}
               </div>
             )}
-            
+
             {isLoading && (
               <div className="h-6 md:h-8 flex items-center justify-center gap-3 text-[var(--color-accent-cyan)] font-mono text-base md:text-lg">
                 <motion.div
@@ -196,7 +196,7 @@ export function Hero() {
               </div>
             )}
           </div>
-          
+
           {!isLoading && commandText.length === fullCommand.length && (
             <div className="min-h-[160px] max-w-[320px] md:max-w-[450px] lg:max-w-[500px] mx-auto text-white leading-relaxed tracking-wide">
               {renderHighlightedText(paragraphText)}
