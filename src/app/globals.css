@@ -1,22 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-primary: #050505;
-  --color-bg-secondary: #0A0A0A;
-  --color-primary-neon: #EF4444;
-  --color-accent-cyan: #F97316;
-  --color-accent-purple: #F43F5E;
-  --color-text-primary: #E5E7EB;
-  --color-text-secondary: #9CA3AF;
-  --color-card-bg: rgba(18, 18, 18, 0.6);
+  --color-bg-primary: #000000;
+  --color-bg-secondary: #0a0000;
+  --color-primary-neon: #ff0033;
+  --color-accent-darkred: #4a0000;
+  --color-accent-cyan: #ff3333;
+  --color-accent-purple: #8b0000;
+  --color-text-primary: #f8f8f8;
+  --color-text-secondary: #a3a3a3;
+  --color-card-bg: rgba(10, 0, 0, 0.6);
   
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 :root {
-  --background: #050505;
-  --foreground: #E5E7EB;
+  --background: #000000;
+  --foreground: #f8f8f8;
 }
 
 body {
@@ -24,22 +25,58 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   overflow-x: hidden;
+  /* GPU optimized subtle animated grid background */
+  background-image: linear-gradient(rgba(255, 0, 51, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 51, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+  animation: gridMove 20s linear infinite;
+  transform: translateZ(0); /* Hardware acceleration */
+}
+
+@keyframes gridMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 40px; }
 }
 
 /* Custom scrollbar for dark theme */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #0A0A0A;
+  background: #2a0000;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #EF4444;
+  background: #ff0033;
+}
+
+/* Cyberpunk Utilities */
+.neon-text-primary {
+  color: var(--color-primary-neon);
+  text-shadow: 0 0 5px rgba(255, 0, 51, 0.3), 0 0 10px rgba(255, 0, 51, 0.2);
+}
+
+.neon-border-primary {
+  border-color: var(--color-primary-neon);
+  box-shadow: 0 0 8px rgba(255, 0, 51, 0.3), inset 0 0 8px rgba(255, 0, 51, 0.1);
+}
+
+.glass-card {
+  background: var(--color-card-bg);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 0, 51, 0.1);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 0, 51, 0.4);
+  box-shadow: 0 0 15px rgba(255, 0, 51, 0.15);
 }

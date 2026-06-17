@@ -52,9 +52,9 @@ export function Skills() {
               viewport={{ once: true }}
               transition={{ delay: idx * 0.2 }}
               className="relative w-full bg-[#050505] border border-[#262626] rounded-2xl p-6 md:p-12 shadow-2xl group transition-all duration-500 hover:border-[color:var(--category-color)] overflow-hidden"
-              style={{ 
+              style={{
                 "--category-color": category.color,
-                boxShadow: `0 0 30px ${category.color}10` 
+                boxShadow: `0 0 30px ${category.color}10`
               } as React.CSSProperties}
             >
 

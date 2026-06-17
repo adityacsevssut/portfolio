@@ -101,7 +101,7 @@ const projects = [
     title: "Dynamic Calculator",
     image: "/calulator.jpg",
     description: "A Simple calculator Using Css Java Script And Html.",
-    tech: ["Html", "CSS","Java SCript"],
+    tech: ["Html", "CSS", "Java SCript"],
     demo: "https://calculator-three-chi-76.vercel.app/",
     github: "https://github.com/adityacsevssut",
     color: "#F59E0B"
@@ -110,7 +110,7 @@ const projects = [
     id: 11,
     title: "CourseCraft",
     description: "A comprehensive full-stack LMS platform.",
-    tech: ["MongoDB", "Express.js", "React", "Node.js","Stripe","Clerk"],
+    tech: ["MongoDB", "Express.js", "React", "Node.js", "Stripe", "Clerk"],
     image: "/photo.jpg",
     demo: "https://coursecraft-fs.onrender.com/",
     github: "https://github.com/adityacsevssut",
@@ -169,20 +169,20 @@ export function Projects() {
         </div>
 
         <div className="relative w-full max-w-6xl mx-auto flex flex-col items-center justify-center">
-          
+
           {/* Navigation Buttons (Desktop) */}
-          <button 
+          <button
             suppressHydrationWarning
-            onClick={prevProject} 
+            onClick={prevProject}
             className="hidden md:flex absolute -left-6 lg:-left-12 z-20 p-4 bg-[#121212] hover:bg-[#262626] border border-[#262626] rounded-full text-white transition-all hover:scale-110 shadow-lg"
             aria-label="Previous Project"
           >
             <ChevronLeft size={24} />
           </button>
-          
-          <button 
+
+          <button
             suppressHydrationWarning
-            onClick={nextProject} 
+            onClick={nextProject}
             className="hidden md:flex absolute -right-6 lg:-right-12 z-20 p-4 bg-[#121212] hover:bg-[#262626] border border-[#262626] rounded-full text-white transition-all hover:scale-110 shadow-lg"
             aria-label="Next Project"
           >
@@ -191,7 +191,7 @@ export function Projects() {
 
           {/* Carousel Container */}
           <div className="w-full h-[380px] sm:h-[400px] md:h-[360px] overflow-visible relative rounded-2xl group">
-            
+
             {/* Background Glow */}
             <AnimatePresence mode="wait">
               <motion.div
@@ -213,20 +213,20 @@ export function Projects() {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ 
-                  x: { type: "spring", stiffness: 300, damping: 30 }, 
+                transition={{
+                  x: { type: "spring", stiffness: 300, damping: 30 },
                   opacity: { duration: 0.2 },
                   scale: { duration: 0.2 }
                 }}
                 className="absolute inset-0 flex flex-col md:flex-row bg-[#121212]/80 backdrop-blur-xl border border-[#333] rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.6)] z-10"
                 style={{ borderTop: `4px solid ${current.color}` }}
               >
-                
+
                 {/* Left Side: Image Content */}
                 <div className="w-full md:w-1/2 h-36 sm:h-40 md:h-full relative border-b md:border-b-0 md:border-r border-[#333] overflow-hidden flex-shrink-0 group-hover:scale-[1.02] transition-transform duration-500 origin-left">
                   <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent z-10 md:bg-gradient-to-r md:from-transparent md:to-[#121212]/80 pointer-events-none" />
-                  <img 
-                    src={current.image} 
+                  <img
+                    src={current.image}
                     alt={current.title}
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
                     onError={(e) => {
@@ -249,7 +249,7 @@ export function Projects() {
                       {current.description}
                     </p>
                   </div>
-                  
+
                   <div className="flex flex-wrap gap-2">
                     {current.tech.map(t => (
                       <span key={t} className="px-3 py-1.5 bg-[#0A0A0A] border border-[#262626] rounded text-[#E5E7EB] font-mono text-xs sm:text-sm shadow-sm transition-colors hover:border-[var(--color-accent-cyan)]">
@@ -259,8 +259,8 @@ export function Projects() {
                   </div>
 
                   <div className="flex flex-wrap gap-4 mt-4">
-                    <a 
-                      href={current.github} 
+                    <a
+                      href={current.github}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 text-white transition-all bg-[#1A1A1A] hover:bg-[#262626] border border-[#333] hover:border-[var(--color-accent-cyan)] rounded-lg px-5 py-2.5 shadow-lg hover:shadow-[0_0_15px_rgba(45,212,191,0.3)] font-mono text-sm sm:text-base font-bold"
@@ -268,8 +268,8 @@ export function Projects() {
                       <FaGithub size={18} />
                       Code
                     </a>
-                    <a 
-                      href={current.demo} 
+                    <a
+                      href={current.demo}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 text-[#050505] transition-all rounded-lg px-5 py-2.5 shadow-lg hover:opacity-90 font-mono text-sm sm:text-base font-bold"
@@ -283,24 +283,24 @@ export function Projects() {
 
               </motion.div>
             </AnimatePresence>
-            
+
           </div>
 
           {/* Navigation Buttons (Mobile) */}
           <div className="flex md:hidden justify-center items-center gap-6 mt-8 w-full z-20">
-            <button 
+            <button
               suppressHydrationWarning
-              onClick={prevProject} 
+              onClick={prevProject}
               className="p-4 bg-[#121212] hover:bg-[#262626] border border-[#262626] rounded-full text-white transition-all shadow-lg active:scale-95"
             >
               <ChevronLeft size={24} />
             </button>
             <div className="font-mono text-sm text-[var(--color-text-secondary)]">
-               Slide to explore
+              Slide to explore
             </div>
-            <button 
+            <button
               suppressHydrationWarning
-              onClick={nextProject} 
+              onClick={nextProject}
               className="p-4 bg-[#121212] hover:bg-[#262626] border border-[#262626] rounded-full text-white transition-all shadow-lg active:scale-95"
             >
               <ChevronRight size={24} />
