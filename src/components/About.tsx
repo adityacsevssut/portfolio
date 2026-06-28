@@ -23,9 +23,15 @@ export function About() {
         transition={{ duration: 0.6 }}
         className="text-center mb-8"
       >
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold font-mono text-white flex flex-wrap justify-center gap-x-2 md:gap-x-3">
-          <span><span className="text-[var(--color-accent-purple)]">const</span> aboutMe</span>
-          <span><span className="text-[var(--color-accent-cyan)]">=</span> require(<span className="text-green-400">"./profile"</span>);</span>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold font-mono text-white flex flex-col md:flex-row items-center justify-center gap-2 md:gap-3 leading-tight">
+          <span className="flex items-center gap-2 md:gap-3">
+            <span className="text-[var(--color-accent-purple)]">const</span>
+            <span>aboutMe</span>
+          </span>
+          <span className="flex items-center gap-2 md:gap-3">
+            <span className="text-[var(--color-accent-cyan)]">=</span>
+            <span>require(<span className="text-green-400">"./profile"</span>);</span>
+          </span>
         </h2>
         <div className="mt-4 text-[#9CA3AF] font-mono text-xs sm:text-sm md:text-base">
           {"//"} fetching developer profile data...

@@ -75,7 +75,7 @@ export function SkillProgress() {
   const currentStack = stacks[currentIndex];
 
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section className="relative pt-4 pb-20 overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold font-mono text-[var(--color-text-primary)]">

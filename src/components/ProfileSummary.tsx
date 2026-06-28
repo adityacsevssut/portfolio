@@ -16,6 +16,12 @@ const lines = [
   "> type 'help' for available commands."
 ];
 
+const getLineColor = (line: string) => {
+  if (line.includes("[OK]") || line.includes("200 OK") || line.includes("current_status")) return "text-green-400";
+  if (line.includes("boot") || line.includes("loading") || line.includes("initializing") || line.includes("passion") || line.includes("help")) return "text-yellow-400";
+  return "text-[#EF4444]";
+};
+
 export function ProfileSummary() {
   const [displayedLines, setDisplayedLines] = useState<string[]>([]);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
@@ -58,7 +64,7 @@ export function ProfileSummary() {
   }, [currentLineIndex, currentCharIndex, isInView]);
 
   return (
-    <section className="py-20 relative flex justify-center px-6">
+    <section className="pb-20 pt-4 relative flex justify-center px-6">
       <div 
         ref={ref}
         className="w-full max-w-3xl bg-[#0A0A0A]/80 backdrop-blur-xl border border-[#262626] rounded-lg overflow-hidden shadow-2xl relative"
@@ -80,7 +86,7 @@ export function ProfileSummary() {
           
           <div className="space-y-2 relative z-20 text-[#E5E7EB]">
             {displayedLines.map((line, i) => (
-              <div key={i} className={line.startsWith("> //") ? "text-[#F43F5E]" : "text-[var(--color-accent-cyan)]"}>
+              <div key={i} className={getLineColor(line)}>
                 {line}
               </div>
             ))}
