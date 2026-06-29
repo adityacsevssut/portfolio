@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { Suspense } from "react";
+import { TerminalHacker } from "./TerminalHacker";
 
 const keywords = ["DFS()", "BFS()", "push()", "pop()", "O(log n)", "O(n)", "shift()"]; // Kept for reference but not rendered for performance
 
@@ -104,6 +105,8 @@ const HeroContent = () => {
 
   return (
     <div className="relative w-full max-w-4xl flex flex-col items-center z-10 mt-2">
+      <TerminalHacker />
+      
       {/* Root Node */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -136,7 +139,7 @@ const HeroContent = () => {
         </a>
         <a
           href="#contact"
-          className="px-6 py-3 rounded-md bg-transparent border border-[var(--color-accent-cyan)] text-[var(--color-accent-cyan)] font-medium hover:bg-[var(--color-accent-cyan)] hover:text-white transition-all shadow-[0_0_15px_rgba(249, 115, 22,0.2)] hover:shadow-[0_0_25px_rgba(249, 115, 22,0.4)] hover:-translate-y-1 hover:scale-105"
+          className="px-6 py-3 rounded-md bg-transparent border border-[var(--color-accent-cyan)] text-[var(--color-accent-cyan)] font-medium hover:bg-[var(--color-accent-cyan)] hover:text-white transition-all shadow-none hover:shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:-translate-y-1 hover:scale-105"
         >
           Contact Me
         </a>
