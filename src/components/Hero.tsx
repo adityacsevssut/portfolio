@@ -7,11 +7,6 @@ import dynamic from "next/dynamic";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { Suspense } from "react";
 
-const LanyardComponent = dynamic(() => import('./Lanyard'), { ssr: false });
-
-const LANYARD_POSITION = [0, 0, 20] as const;
-const LANYARD_GRAVITY = [0, -40, 0] as const;
-
 const keywords = ["DFS()", "BFS()", "push()", "pop()", "O(log n)", "O(n)", "shift()"]; // Kept for reference but not rendered for performance
 
 const renderHighlightedText = (text: string) => {
@@ -228,20 +223,6 @@ export function Hero() {
   return (
     <section id="home" className="relative flex flex-col items-center justify-center overflow-hidden pt-20 pb-0">
       {/* Floating Keywords removed for performance optimization */}
-
-      {/* Custom Hero Image Section */}
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, ease: "easeOut", delay: 0.5 }}
-        className="relative z-20 w-full flex flex-col items-center justify-center"
-      >
-        <ErrorBoundary>
-          <Suspense fallback={<div className="text-white">Loading 3D Physics Engine...</div>}>
-            <LanyardComponent position={LANYARD_POSITION} gravity={LANYARD_GRAVITY} frontImage="/hero-image.jpg" backImage="/hero-image.jpg" />
-          </Suspense>
-        </ErrorBoundary>
-      </motion.div>
 
       <HeroContent />
     </section>
