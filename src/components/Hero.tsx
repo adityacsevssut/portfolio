@@ -9,6 +9,9 @@ import { Suspense } from "react";
 
 const LanyardComponent = dynamic(() => import('./Lanyard'), { ssr: false });
 
+const LANYARD_POSITION = [0, 0, 20] as const;
+const LANYARD_GRAVITY = [0, -40, 0] as const;
+
 const keywords = ["DFS()", "BFS()", "push()", "pop()", "O(log n)", "O(n)", "shift()"]; // Kept for reference but not rendered for performance
 
 const renderHighlightedText = (text: string) => {
@@ -21,8 +24,7 @@ const renderHighlightedText = (text: string) => {
   });
 };
 
-export function Hero() {
-  const [mounted, setMounted] = useState(false);
+const HeroContent = () => {
   const [text, setText] = useState("");
   const [commandText, setCommandText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +63,6 @@ export function Hero() {
   }, [titleText, isDeleting, titleIndex]);
 
   useEffect(() => {
-    setMounted(true);
     let i = 0;
     let cmdInterval: NodeJS.Timeout;
     let paraInterval: NodeJS.Timeout;
@@ -106,6 +107,122 @@ export function Hero() {
     };
   }, []);
 
+  return (
+    <div className="relative w-full max-w-4xl flex flex-col items-center z-10 mt-2">
+      {/* Root Node */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="relative px-8 md:px-12 py-4 bg-[var(--color-card-bg)] backdrop-blur-sm border border-[var(--color-primary-neon)] rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.35)] inline-flex justify-center w-fit"
+      >
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-wide text-[var(--color-primary-neon)] min-h-[40px] sm:min-h-[50px] md:min-h-[70px] flex items-center justify-center text-center whitespace-nowrap">
+          {titleText}
+          <motion.span
+            animate={{ opacity: [1, 0] }}
+            transition={{ duration: 0.8, repeat: Infinity }}
+            className="inline-block w-1 md:w-1.5 h-8 sm:h-10 md:h-12 bg-[var(--color-primary-neon)] ml-1 md:ml-2 align-middle rounded-sm"
+          />
+        </h1>
+      </motion.div>
+
+      {/* CTA Buttons */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 1 }}
+        className="flex flex-wrap justify-center gap-4 mt-12 z-20 relative"
+      >
+        <a
+          href="#projects"
+          className="px-6 py-3 rounded-md bg-[var(--color-primary-neon)] text-white font-medium hover:bg-opacity-80 transition-all shadow-[0_0_15px_rgba(239, 68, 68,0.5)] hover:shadow-[0_0_25px_rgba(239, 68, 68,0.8)] hover:-translate-y-1 hover:scale-105"
+        >
+          View Projects
+        </a>
+        <a
+          href="#contact"
+          className="px-6 py-3 rounded-md bg-transparent border border-[var(--color-accent-cyan)] text-[var(--color-accent-cyan)] font-medium hover:bg-[var(--color-accent-cyan)] hover:text-white transition-all shadow-[0_0_15px_rgba(249, 115, 22,0.2)] hover:shadow-[0_0_25px_rgba(249, 115, 22,0.4)] hover:-translate-y-1 hover:scale-105"
+        >
+          Contact Me
+        </a>
+        <a
+          href="/resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-6 py-3 rounded-md bg-[var(--color-card-bg)] border border-[var(--color-text-secondary)] text-[var(--color-text-primary)] font-medium hover:bg-opacity-80 transition-all hover:border-white hover:-translate-y-1 hover:scale-105"
+        >
+          Resume
+        </a>
+      </motion.div>
+
+      {/* Typing Effect */}
+      <div className="mt-12 mb-2 max-w-2xl w-[calc(100%-2rem)] mx-auto flex flex-col items-center text-center font-sans text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed text-[var(--color-text-primary)]">
+        <div className="mb-8 flex flex-col items-center justify-center gap-2">
+          <div className="h-6 md:h-8 text-white font-mono text-base md:text-lg flex items-center justify-center">
+            {text}
+            {text.length < fullText.length && (
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.8, repeat: Infinity }}
+                className="inline-block w-1.5 h-5 md:h-6 bg-[var(--color-primary-neon)] ml-1"
+              />
+            )}
+          </div>
+
+          {text.length === fullText.length && (
+            <div className="h-6 md:h-8 text-[var(--color-primary-neon)] font-mono text-base md:text-lg flex items-center justify-center">
+              {commandText}
+              {commandText.length < fullCommand.length && (
+                <motion.span
+                  animate={{ opacity: [1, 0] }}
+                  transition={{ duration: 0.8, repeat: Infinity }}
+                  className="inline-block w-1.5 h-5 md:h-6 bg-[var(--color-primary-neon)] ml-1"
+                />
+              )}
+            </div>
+          )}
+
+          {isLoading && (
+            <div className="h-6 md:h-8 flex items-center justify-center gap-3 text-[var(--color-accent-cyan)] font-mono text-base md:text-lg">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                className="w-4 h-4 border-2 border-t-[var(--color-primary-neon)] border-r-transparent border-b-[var(--color-primary-neon)] border-l-transparent rounded-full"
+              />
+              <span>loading...</span>
+            </div>
+          )}
+        </div>
+
+        {!isLoading && commandText.length === fullCommand.length && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="min-h-[160px] max-w-[320px] md:max-w-[650px] lg:max-w-[800px] mx-auto text-gray-300 leading-relaxed tracking-wide md:bg-[var(--color-card-bg)]/30 md:backdrop-blur-md md:px-10 md:py-8 md:rounded-2xl md:border md:border-[#262626]/50 md:shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+          >
+            {renderHighlightedText(paragraphText)}
+            {paragraphText.length < fullParagraph.length && (
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.8, repeat: Infinity }}
+                className="inline-block w-2 h-7 md:h-8 lg:h-9 bg-[var(--color-primary-neon)] ml-1 align-middle"
+              />
+            )}
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export function Hero() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   if (!mounted) return null;
 
   return (
@@ -121,121 +238,12 @@ export function Hero() {
       >
         <ErrorBoundary>
           <Suspense fallback={<div className="text-white">Loading 3D Physics Engine...</div>}>
-            <LanyardComponent position={[0, 0, 20]} gravity={[0, -40, 0]} frontImage="/hero-image.jpg" backImage="/hero-image.jpg" />
+            <LanyardComponent position={LANYARD_POSITION} gravity={LANYARD_GRAVITY} frontImage="/hero-image.jpg" backImage="/hero-image.jpg" />
           </Suspense>
         </ErrorBoundary>
       </motion.div>
 
-      {/* Binary Tree Visual */}
-      <div className="relative w-full max-w-4xl flex flex-col items-center z-10 mt-2">
-        {/* Root Node */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative px-8 md:px-12 py-4 bg-[var(--color-card-bg)] backdrop-blur-sm border border-[var(--color-primary-neon)] rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.35)] inline-flex justify-center w-fit"
-        >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-wide text-[var(--color-primary-neon)] min-h-[40px] sm:min-h-[50px] md:min-h-[70px] flex items-center justify-center text-center whitespace-nowrap">
-            {titleText}
-            <motion.span
-              animate={{ opacity: [1, 0] }}
-              transition={{ duration: 0.8, repeat: Infinity }}
-              className="inline-block w-1 md:w-1.5 h-8 sm:h-10 md:h-12 bg-[var(--color-primary-neon)] ml-1 md:ml-2 align-middle rounded-sm"
-            />
-          </h1>
-        </motion.div>
-
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="flex flex-wrap justify-center gap-4 mt-12 z-20 relative"
-        >
-          <a
-            href="#projects"
-            className="px-6 py-3 rounded-md bg-[var(--color-primary-neon)] text-white font-medium hover:bg-opacity-80 transition-all shadow-[0_0_15px_rgba(239, 68, 68,0.5)] hover:shadow-[0_0_25px_rgba(239, 68, 68,0.8)] hover:-translate-y-1 hover:scale-105"
-          >
-            View Projects
-          </a>
-          <a
-            href="#contact"
-            className="px-6 py-3 rounded-md bg-transparent border border-[var(--color-accent-cyan)] text-[var(--color-accent-cyan)] font-medium hover:bg-[var(--color-accent-cyan)] hover:text-white transition-all shadow-[0_0_15px_rgba(249, 115, 22,0.2)] hover:shadow-[0_0_25px_rgba(249, 115, 22,0.4)] hover:-translate-y-1 hover:scale-105"
-          >
-            Contact Me
-          </a>
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 py-3 rounded-md bg-[var(--color-card-bg)] border border-[var(--color-text-secondary)] text-[var(--color-text-primary)] font-medium hover:bg-opacity-80 transition-all hover:border-white hover:-translate-y-1 hover:scale-105"
-          >
-            Resume
-          </a>
-        </motion.div>
-
-        {/* Typing Effect */}
-        <div className="mt-12 mb-2 max-w-2xl w-[calc(100%-2rem)] mx-auto flex flex-col items-center text-center font-sans text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed text-[var(--color-text-primary)]">
-          <div className="mb-8 flex flex-col items-center justify-center gap-2">
-            <div className="h-6 md:h-8 text-white font-mono text-base md:text-lg flex items-center justify-center">
-              {text}
-              {text.length < fullText.length && (
-                <motion.span
-                  animate={{ opacity: [1, 0] }}
-                  transition={{ duration: 0.8, repeat: Infinity }}
-                  className="inline-block w-1.5 h-5 md:h-6 bg-[var(--color-primary-neon)] ml-1"
-                />
-              )}
-            </div>
-
-            {text.length === fullText.length && (
-              <div className="h-6 md:h-8 text-[var(--color-primary-neon)] font-mono text-base md:text-lg flex items-center justify-center">
-                {commandText}
-                {commandText.length < fullCommand.length && (
-                  <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{ duration: 0.8, repeat: Infinity }}
-                    className="inline-block w-1.5 h-5 md:h-6 bg-[var(--color-primary-neon)] ml-1"
-                  />
-                )}
-              </div>
-            )}
-
-            {isLoading && (
-              <div className="h-6 md:h-8 flex items-center justify-center gap-3 text-[var(--color-accent-cyan)] font-mono text-base md:text-lg">
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  className="w-4 h-4 border-2 border-t-[var(--color-primary-neon)] border-r-transparent border-b-[var(--color-primary-neon)] border-l-transparent rounded-full"
-                />
-                <span>loading...</span>
-              </div>
-            )}
-          </div>
-
-          {!isLoading && commandText.length === fullCommand.length && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="min-h-[160px] max-w-[320px] md:max-w-[650px] lg:max-w-[800px] mx-auto text-gray-300 leading-relaxed tracking-wide md:bg-[var(--color-card-bg)]/30 md:backdrop-blur-md md:px-10 md:py-8 md:rounded-2xl md:border md:border-[#262626]/50 md:shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-            >
-              {renderHighlightedText(paragraphText)}
-              {paragraphText.length < fullParagraph.length && (
-                <motion.span
-                  animate={{ opacity: [1, 0] }}
-                  transition={{ duration: 0.8, repeat: Infinity }}
-                  className="inline-block w-2 h-7 md:h-8 lg:h-9 bg-[var(--color-primary-neon)] ml-1 align-middle"
-                />
-              )}
-            </motion.div>
-          )}
-        </div>
-
-
-
-
-      </div>
+      <HeroContent />
     </section>
   );
 }
