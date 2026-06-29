@@ -155,7 +155,7 @@ export function Projects() {
   };
 
   return (
-    <section id="projects" className="relative min-h-[90vh] py-16 md:py-20 bg-[#050505]">
+    <section id="projects" className="relative min-h-[90vh] py-16 md:py-20">
       <div className="container mx-auto px-4 sm:px-6 relative z-10 h-full flex flex-col">
         <div className="text-center mb-16 md:mb-20">
           <h2 className="text-3xl md:text-5xl font-bold font-mono text-white flex flex-wrap justify-center items-center gap-x-3 md:gap-x-4">

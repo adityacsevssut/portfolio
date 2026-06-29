@@ -3,6 +3,11 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import dynamic from "next/dynamic";
+import { ErrorBoundary } from "./ErrorBoundary";
+import { Suspense } from "react";
+
+const LanyardComponent = dynamic(() => import('./Lanyard'), { ssr: false });
 
 const keywords = ["DFS()", "BFS()", "push()", "pop()", "O(log n)", "O(n)", "shift()"]; // Kept for reference but not rendered for performance
 
@@ -104,49 +109,21 @@ export function Hero() {
   if (!mounted) return null;
 
   return (
-    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
-      {/* Background Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
-
+    <section id="home" className="relative flex flex-col items-center justify-center overflow-hidden pt-20 pb-0">
       {/* Floating Keywords removed for performance optimization */}
 
       {/* Custom Hero Image Section */}
       <motion.div 
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="relative z-20 mt-4 mb-8 w-full flex flex-col items-center justify-center"
+        transition={{ duration: 1, ease: "easeOut", delay: 0.5 }}
+        className="relative z-20 w-full flex flex-col items-center justify-center"
       >
-        {/* Outer glowing rings */}
-        <div className="relative w-72 h-72 md:w-[28rem] md:h-[28rem] flex items-center justify-center group">
-          <motion.div 
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0 rounded-full border border-[var(--color-primary-neon)] opacity-30 shadow-[0_0_30px_rgba(239,68,68,0.4)] group-hover:opacity-60 transition-opacity duration-500"
-            style={{ borderStyle: 'dashed' }}
-          />
-          <motion.div 
-            animate={{ rotate: -360 }}
-            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-2 rounded-full border-2 border-[var(--color-accent-cyan)] opacity-20 group-hover:opacity-80 transition-opacity duration-500"
-            style={{ borderTopStyle: 'dotted', borderBottomStyle: 'dotted' }}
-          />
-          
-          {/* Inner Image Container */}
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            className="relative w-64 h-64 md:w-[24rem] md:h-[24rem] rounded-full overflow-hidden border-4 border-[#121212] group-hover:border-[var(--color-primary-neon)] transition-all duration-500 shadow-2xl z-10"
-          >
-            {/* The Image */}
-            <img 
-              src="/hero-image.jpg" 
-              alt="Aditya Nahak" 
-              className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
-            />
-            {/* Scanline effect overlay */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.3)_50%)] bg-[length:100%_4px] pointer-events-none mix-blend-overlay opacity-50 group-hover:opacity-0 transition-opacity duration-500"></div>
-          </motion.div>
-        </div>
+        <ErrorBoundary>
+          <Suspense fallback={<div className="text-white">Loading 3D Physics Engine...</div>}>
+            <LanyardComponent position={[0, 0, 20]} gravity={[0, -40, 0]} frontImage="/hero-image.jpg" backImage="/hero-image.jpg" />
+          </Suspense>
+        </ErrorBoundary>
       </motion.div>
 
       {/* Binary Tree Visual */}

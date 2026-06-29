@@ -34,7 +34,7 @@ export function Hobbies() {
   }, []);
 
   return (
-    <section className="pt-20 pb-10 flex flex-col items-center bg-[#050505] overflow-hidden">
+    <section className="pt-20 pb-10 flex flex-col items-center overflow-hidden">
       <div className="text-center mb-16 relative z-20">
         <h2 className="text-3xl md:text-5xl font-bold font-mono text-[var(--color-text-primary)]">
           <span className="text-[#F43F5E]">Graph</span><span className="text-[var(--color-text-secondary)]">&lt;</span>Hobbies<span className="text-[var(--color-text-secondary)]">&gt;</span>

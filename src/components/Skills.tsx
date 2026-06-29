@@ -44,7 +44,7 @@ const skillCategories = [
 
 export function Skills() {
   return (
-    <section id="skills" className="relative pt-20 pb-10 bg-[#050505] border-t border-[#262626] overflow-hidden">
+    <section id="skills" className="relative pt-20 pb-10 border-t border-[#262626] overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold font-mono text-[var(--color-text-primary)]">
@@ -162,17 +162,64 @@ function RootNode({ title, color }: { title: string, color: string }) {
   );
 }
 
+const getSkillLogo = (skill: string) => {
+  const logos: Record<string, string> = {
+    "C-Programming": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg",
+    "C++": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg",
+    "Java Script": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg",
+    "Python": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg",
+    "DSA": "https://cdn.simpleicons.org/leetcode/FFA116",
+    "HTML5": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg",
+    "CSS 3": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg",
+    "React": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
+    "TailwindCSS": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg",
+    "Node JS": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg",
+    "Express JS": "https://cdn.simpleicons.org/express/white",
+    "EJS": "https://cdn.simpleicons.org/ejs/B4CA65",
+    "Axios": "https://cdn.simpleicons.org/axios/5A29E4",
+    "Relational": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuresqldatabase/azuresqldatabase-original.svg",
+    "Linear DB": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg",
+    "PostGreSQL": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg",
+    "MySQL": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg",
+    "MongoDB": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg",
+    "NumPy": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg",
+    "Graphic Design": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg",
+    "MatplotLib": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matplotlib/matplotlib-original.svg",
+    "Pandas": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg",
+    "Canva": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/canva/canva-original.svg",
+    "Adobe": "https://api.iconify.design/logos/adobe-icon.svg",
+    "MySQL & Excel": "/excel.svg",
+    "Matplot & Seaborn": "https://raw.githubusercontent.com/mwaskom/seaborn/master/doc/_static/logo-mark-lightbg.svg",
+    "Power BI": "https://api.iconify.design/logos/microsoft-power-bi.svg"
+  };
+  return logos[skill];
+};
+
 function SkillNode({ skill, color }: { skill: string, color: string }) {
+  const [imgError, setImgError] = React.useState(false);
+  
   if (!skill) return null;
+  const logoUrl = getSkillLogo(skill);
+
   return (
     <motion.div
       whileHover={{ scale: 1.1, boxShadow: `0 0 20px ${color}40` }}
-      className="flex flex-col items-center w-full min-w-[70px] md:min-w-[120px] bg-[var(--color-card-bg)] rounded-lg overflow-hidden group cursor-default transition-colors z-10 shadow-md"
+      title={skill}
+      className="flex flex-col items-center justify-center w-[60px] h-[60px] md:w-[80px] md:h-[80px] bg-[#121212] rounded-xl overflow-hidden group cursor-default transition-colors z-10 shadow-lg relative"
       style={{ border: `2px solid ${color}` }}
     >
-      <div className="flex-1 w-full px-1 py-3 font-medium text-[9px] sm:text-[10px] md:text-sm text-[var(--color-text-primary)] group-hover:text-white transition-colors text-center whitespace-normal break-words leading-tight flex items-center justify-center min-h-[40px] md:min-h-[50px]">
-        {skill}
-      </div>
+      {logoUrl && !imgError ? (
+        <img 
+          src={logoUrl} 
+          alt={skill} 
+          onError={() => setImgError(true)}
+          className="w-8 h-8 md:w-10 md:h-10 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-md" 
+        />
+      ) : (
+        <div className="flex-1 w-full px-1 py-3 font-medium text-[9px] sm:text-[10px] md:text-xs text-[var(--color-text-primary)] group-hover:text-white transition-colors text-center whitespace-normal break-words leading-tight flex items-center justify-center">
+          {skill}
+        </div>
+      )}
     </motion.div>
   );
 }
@@ -183,11 +230,12 @@ function Edge({ x1, y1, x2, y2, color, delay }: { x1: string, y1: string, x2: st
       <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="1.5" strokeOpacity="0.4" />
       <motion.line
         x1={x1} y1={y1} x2={x2} y2={y2}
-        stroke={color} strokeWidth="2"
-        strokeDasharray="4 8"
-        initial={{ strokeDashoffset: 100, opacity: 0 }}
-        whileInView={{ strokeDashoffset: 0, opacity: 1 }}
+        stroke={color} strokeWidth="3"
+        strokeDasharray="8 12"
+        initial={{ opacity: 1 }}
+        animate={{ strokeDashoffset: [100, 0], opacity: 1 }}
         transition={{ duration: 1.5, delay, repeat: Infinity, ease: "linear" }}
+        style={{ filter: `drop-shadow(0px 0px 5px ${color})` }}
       />
     </g>
   );

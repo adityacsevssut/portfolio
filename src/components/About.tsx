@@ -2,18 +2,24 @@
 
 import { motion } from "framer-motion";
 
-const profileData = [
-  { key: "name", value: '"Aditya Nahak"' },
-  { key: "role", value: '"Full Stack Developer"' },
-  { key: "passion", value: '"Ml And DSA"' },
-  { key: "mindset", value: '"Learn like Your Never Learn"' },
-  { key: "location", value: '"odisha , Talcher"' },
-  { key: "status", value: '200 /* OK */', isStatus: true }
-];
-
 export function About() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05,
+      },
+    },
+  };
+
+  const lineVariants = {
+    hidden: { opacity: 0, x: -10 },
+    visible: { opacity: 1, x: 0 },
+  };
+
   return (
-    <section id="about" className="py-10 md:py-12 relative flex flex-col items-center justify-center px-4 md:px-6">
+    <section id="about" className="pt-0 pb-10 md:pb-12 relative flex flex-col items-center justify-center px-4 md:px-6">
 
       {/* Section Heading */}
       <motion.div
@@ -38,12 +44,12 @@ export function About() {
         </div>
       </motion.div>
 
-      <div className="w-full max-w-3xl bg-[#121212]/90 backdrop-blur-xl border border-[#262626] rounded-xl shadow-2xl overflow-hidden z-10">
+      <div className="w-full max-w-3xl bg-[#0a0a0a]/90 backdrop-blur-xl border border-[#262626] rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] overflow-hidden z-10">
 
         {/* VS Code Style Header */}
         <div className="bg-[#121212] flex items-center border-b border-[#262626] select-none">
           {/* Active Tab */}
-          <div className="flex items-center gap-2 px-4 py-3 bg-[#0A0A0A] border-t-2 border-t-[var(--color-accent-purple)] border-r border-r-[#262626] min-w-[140px]">
+          <div className="flex items-center gap-2 px-4 py-3 bg-[#050505] border-t-2 border-t-[var(--color-accent-purple)] border-r border-r-[#262626] min-w-[140px]">
             <span className="text-yellow-400 font-mono text-xs font-bold">{"{ }"}</span>
             <span className="text-[#E5E7EB] font-mono text-xs">about.json</span>
           </div>
@@ -62,44 +68,87 @@ export function About() {
           </div>
         </div>
 
-        {/* Card Body */}
-        <div className="p-4 md:p-6 font-mono text-sm md:text-base">
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-[#FB7185] text-lg md:text-xl mb-3"
+        {/* Card Body - Now with the new code layout */}
+        <div className="p-4 md:p-6 lg:p-8 font-mono text-sm sm:text-base md:text-lg overflow-x-auto relative bg-[#050505]">
+          
+          <motion.div
+             variants={containerVariants}
+             initial="hidden"
+             whileInView="visible"
+             viewport={{ once: true, amount: 0.2 }}
+             className="leading-relaxed min-w-[500px]"
           >
-            {"{"}
-          </motion.div>
-
-          <div className="flex flex-col gap-2 pl-2 md:pl-3 border-l border-[#262626]/30 ml-1 py-1">
-            {profileData.map((item, index) => (
-              <motion.div
-                key={item.key}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.15, duration: 0.4 }}
-                className="bg-[#0A0A0A] border border-[#262626] rounded-lg p-2 md:p-3 shadow-sm hover:border-[var(--color-accent-cyan)]/40 transition-colors"
-              >
-                <div className="text-[var(--color-accent-cyan)] font-medium mb-0.5 text-xs md:text-sm">{item.key}</div>
-                <div className={`text-sm md:text-base ${item.isStatus ? "text-[#E5E7EB]" : "text-[#C084FC]"}`}>
-                  {item.value}
-                </div>
+            <motion.div variants={lineVariants} className="flex gap-2 mb-4">
+               <span className="text-[#c678dd] font-bold">const</span>
+               <span className="text-[#61afef]">developer</span>
+               <span className="text-[#abb2bf]">=</span>
+               <span className="text-[#abb2bf]">{"{"}</span>
+            </motion.div>
+            
+            <div className="pl-6 md:pl-8 flex flex-col gap-1 sm:gap-2">
+              <motion.div variants={lineVariants}>
+                <span className="text-[#e06c75]">"role"</span><span className="text-[#abb2bf]">: </span>
+                <span className="text-[#98c379]">"Computer Science Student"</span><span className="text-[#abb2bf]">,</span>
               </motion.div>
-            ))}
-          </div>
+              
+              <motion.div variants={lineVariants} className="mt-2">
+                <span className="text-[#e06c75]">"expertise"</span><span className="text-[#abb2bf]">: [</span>
+              </motion.div>
+              <motion.div variants={lineVariants} className="pl-6 text-[#98c379]">
+                "Full-Stack Development"<span className="text-[#abb2bf]">,</span>
+              </motion.div>
+              <motion.div variants={lineVariants} className="pl-6 text-[#98c379]">
+                "DSA Problem Solving"<span className="text-[#abb2bf]">,</span>
+              </motion.div>
+              <motion.div variants={lineVariants} className="pl-6 text-[#98c379]">
+                "UI Design"
+              </motion.div>
+              <motion.div variants={lineVariants}>
+                <span className="text-[#abb2bf]">],</span>
+              </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: profileData.length * 0.15 }}
-            className="text-[#FB7185] text-lg md:text-xl mt-3"
-          >
-            {"};"}
+              <motion.div variants={lineVariants} className="mt-2">
+                <span className="text-[#e06c75]">"stack"</span><span className="text-[#abb2bf]">: [</span>
+              </motion.div>
+              <motion.div variants={lineVariants} className="pl-6">
+                <span className="text-[#98c379]">"Node.js"</span><span className="text-[#abb2bf]">, </span>
+                <span className="text-[#98c379]">"Express.js"</span><span className="text-[#abb2bf]">,</span>
+              </motion.div>
+              <motion.div variants={lineVariants} className="pl-6">
+                <span className="text-[#98c379]">"MongoDB"</span><span className="text-[#abb2bf]">, </span>
+                <span className="text-[#98c379]">"React"</span>
+              </motion.div>
+              <motion.div variants={lineVariants}>
+                <span className="text-[#abb2bf]">],</span>
+              </motion.div>
+
+              <motion.div variants={lineVariants} className="mt-2">
+                <span className="text-[#e06c75]">"Hobbies"</span><span className="text-[#abb2bf]">: [</span>
+              </motion.div>
+              <motion.div variants={lineVariants} className="pl-6">
+                <span className="text-[#98c379]">"Video Game"</span><span className="text-[#abb2bf]">, </span>
+                <span className="text-[#98c379]">"Coding"</span><span className="text-[#abb2bf]">,</span>
+              </motion.div>
+              <motion.div variants={lineVariants} className="pl-6">
+                <span className="text-[#98c379]">"Editing"</span><span className="text-[#abb2bf]">, </span>
+                <span className="text-[#98c379]">"Exploring New Ideas"</span>
+              </motion.div>
+              <motion.div variants={lineVariants}>
+                <span className="text-[#abb2bf]">]</span>
+              </motion.div>
+            </div>
+            
+            <motion.div variants={lineVariants} className="mt-4 text-[#abb2bf]">
+              {"};"}
+            </motion.div>
+
+            <motion.div variants={lineVariants} className="mt-8 text-[#5c6370] italic">
+              {"// Passionate about building clean,"}
+              <br />
+              {"// responsive, real-world applications."}
+            </motion.div>
           </motion.div>
+
         </div>
       </div>
     </section>

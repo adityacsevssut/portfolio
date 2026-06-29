@@ -26,7 +26,7 @@ const experience = [
 
 export function Experience() {
   return (
-    <section className="relative py-20 overflow-hidden bg-[#050505]">
+    <section className="relative py-20 overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold font-mono text-[var(--color-text-primary)] leading-tight">

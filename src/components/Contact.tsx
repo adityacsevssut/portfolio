@@ -16,7 +16,7 @@ export function Contact() {
   ];
 
   return (
-    <section id="contact" className="pt-0 pb-20 relative bg-[#050505] overflow-hidden">
+    <section id="contact" className="pt-0 pb-20 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10 flex flex-col items-center justify-center">
         
         {/* Terminal Contact Form */}

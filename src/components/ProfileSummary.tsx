@@ -64,7 +64,7 @@ export function ProfileSummary() {
   }, [currentLineIndex, currentCharIndex, isInView]);
 
   return (
-    <section className="pb-20 pt-4 relative flex justify-center px-6">
+    <section className="pb-0 pt-4 relative flex justify-center px-6">
       <div 
         ref={ref}
         className="w-full max-w-3xl bg-[#0A0A0A]/80 backdrop-blur-xl border border-[#262626] rounded-lg overflow-hidden shadow-2xl relative"

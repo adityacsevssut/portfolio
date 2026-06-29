@@ -26,11 +26,10 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   overflow-x: hidden;
   /* GPU optimized subtle animated grid background */
-  background-image: linear-gradient(rgba(255, 0, 51, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 0, 51, 0.03) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
   background-size: 40px 40px;
   background-position: center center;
-  animation: gridMove 20s linear infinite;
   transform: translateZ(0); /* Hardware acceleration */
 }
 
