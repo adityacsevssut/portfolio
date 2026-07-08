@@ -19,8 +19,7 @@ export function About() {
   };
 
   return (
-    <section id="about" className="pt-0 pb-10 md:pb-12 relative flex flex-col items-center justify-center px-4 md:px-6">
-
+    <section id="about" className="pt-16 md:pt-20 pb-10 md:pb-12 relative flex flex-col items-center justify-center px-4 md:px-6">
       {/* Section Heading */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

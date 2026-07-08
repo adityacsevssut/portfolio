@@ -75,15 +75,28 @@ export function Skills() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.2 }}
-                className="relative w-full bg-[#050505] border border-[#262626] rounded-2xl p-6 md:p-12 shadow-2xl group transition-all duration-500 hover:border-[color:var(--category-color)] overflow-hidden"
+                className="relative w-full bg-[#0f0f0f] rounded-2xl shadow-2xl group transition-all duration-500 overflow-hidden"
                 style={{
                   "--category-color": category.color,
                   boxShadow: `0 0 30px ${category.color}10`
                 } as React.CSSProperties}
               >
+                {/* Spinning Gradient Border */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div 
+                    className="w-[200px] h-[2000px] opacity-60" 
+                    style={{ 
+                      background: `linear-gradient(90deg, transparent, var(--category-color), var(--category-color), transparent)`,
+                      animation: 'rotation_481 4000ms infinite linear',
+                      willChange: 'transform'
+                    }} 
+                  />
+                </div>
 
-                {/* Tree Container without horizontal scroll for mobile */}
-                <div className="relative w-full py-2 md:py-4 z-10">
+                {/* Inner Content */}
+                <div className="relative z-10 m-[2px] bg-[#080808] rounded-[14px] p-6 md:p-12 overflow-hidden shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]">
+                  {/* Tree Container without horizontal scroll for mobile */}
+                  <div className="relative w-full py-2 md:py-4 z-10">
                   <div className="relative w-full h-[280px] md:h-[400px] mx-auto">
 
                     {/* SVG Lines */}
@@ -137,6 +150,7 @@ export function Skills() {
                     )}
 
                   </div>
+                </div>
                 </div>
 
               </motion.div>

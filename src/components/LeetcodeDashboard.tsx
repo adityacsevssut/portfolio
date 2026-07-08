@@ -22,13 +22,13 @@ export function LeetcodeDashboard() {
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-center justify-between mb-12 gap-4">
+        <div className="flex flex-col items-center justify-center text-center mb-12 gap-5">
           <div>
-            <h2 className="text-3xl md:text-5xl font-bold font-mono text-white flex items-center gap-3">
+            <h2 className="text-3xl md:text-5xl font-bold font-mono text-white flex items-center justify-center gap-3">
               <span className="text-[#FFA116]">{"{ }"}</span>
               LeetCode
             </h2>
-            <p className="text-[var(--color-text-secondary)] mt-2 font-mono text-sm">
+            <p className="text-[var(--color-text-secondary)] mt-3 font-mono text-sm md:text-base">
               // DSA Problem Solving & Competitions
             </p>
           </div>
@@ -36,7 +36,7 @@ export function LeetcodeDashboard() {
             href="https://leetcode.com/u/adityacsevssut/" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#FFA116]/10 text-[#FFA116] border border-[#FFA116]/30 hover:bg-[#FFA116]/20 transition-colors font-mono font-bold text-sm shadow-[0_0_15px_rgba(255,161,22,0.15)]"
+            className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#FFA116]/10 text-[#FFA116] border border-[#FFA116]/30 hover:bg-[#FFA116]/20 transition-colors font-mono font-bold text-sm shadow-[0_0_15px_rgba(255,161,22,0.15)]"
           >
             View Profile <ExternalLink size={16} />
           </a>
