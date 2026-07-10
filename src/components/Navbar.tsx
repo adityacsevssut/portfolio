@@ -38,13 +38,31 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, isMobile: boolean = false) => {
     e.preventDefault();
     const targetId = href.replace("#", "");
     const elem = document.getElementById(targetId);
     if (elem) {
-      elem.scrollIntoView({ behavior: "smooth" });
-      setActiveSection(targetId);
+      const executeScroll = () => {
+        const headerOffset = 80; // approximate header height
+        const elementPosition = elem.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+        setActiveSection(targetId);
+      };
+
+      if (isMobile) {
+        setIsMenuOpen(false);
+        // Delay scroll slightly to allow menu collapse animation to start
+        // This prevents scroll cancellation on iOS Safari
+        setTimeout(executeScroll, 100);
+      } else {
+        executeScroll();
+      }
     }
   };
 
@@ -138,8 +156,7 @@ export function Navbar() {
                   key={item.name}
                   href={item.href}
                   onClick={(e) => {
-                    handleClick(e, item.href);
-                    setIsMenuOpen(false);
+                    handleClick(e, item.href, true);
                   }}
                   className={cn(
                     "flex items-center transition-colors duration-300 mr-2",

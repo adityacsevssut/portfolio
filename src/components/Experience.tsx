@@ -6,7 +6,7 @@ import { ArrowDown } from "lucide-react";
 const experience = [
   {
     role: "MERN Stack Intern",
-    company: "Alfido Tech",
+    company: "Algonive PVT LTD",
     date: "May 2026 - Jun 2026",
     description: "Developed and maintained full-stack web applications utilizing MongoDB, Express.js, React, and Node.js. Built responsive, user-centric interfaces and integrated robust RESTful APIs to ensure seamless data flow.",
   },

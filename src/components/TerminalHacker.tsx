@@ -114,8 +114,8 @@ export const TerminalHacker = () => {
             <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-red-500 z-20 rounded-br-lg" />
 
             <Image
-              src="/hacker.png"
-              alt="Hacker"
+              src="/hero.jpg"
+              alt="Hero"
               width={500}
               height={400}
               className="w-full object-cover rounded-lg"

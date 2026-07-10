@@ -8,19 +8,19 @@ const skillCategories = [
     title: "Languages & Core",
     methodName: "languagesAndCoreStack",
     nodes: ["C-Programming", "C++", "Java Script", "Python", "DSA"],
-    color: "var(--color-primary-neon)"
+    color: "#ef4444" // Red
   },
   {
     title: "Frontend",
     methodName: "frontendStack",
     nodes: ["HTML5", "CSS 3", "React", "", "TailwindCSS"],
-    color: "#3B82F6"
+    color: "#3B82F6" // Blue
   },
   {
     title: "Backend",
     methodName: "backendStack",
     nodes: ["Node JS", "Express JS", "EJS", "Axios"],
-    color: "var(--color-accent-purple)"
+    color: "#8B5CF6" // Purple
   },
   {
     title: "Databases",
@@ -39,6 +39,12 @@ const skillCategories = [
     methodName: "dataAnalyticsStack",
     nodes: ["Python", "MySQL & Excel", "NumPy", "Pandas", "Matplot & Seaborn", "Power BI"],
     color: "#06B6D4"
+  },
+  {
+    title: "DevOps & Cloud",
+    methodName: "devopsStack",
+    nodes: ["Linux", "AWS", "Git", "GitHub", "Docker", "Kubernetes"],
+    color: "#EC4899" // Pink
   }
 ];
 
@@ -204,7 +210,13 @@ const getSkillLogo = (skill: string) => {
     "Adobe": "https://api.iconify.design/logos/adobe-icon.svg",
     "MySQL & Excel": "/excel.svg",
     "Matplot & Seaborn": "https://raw.githubusercontent.com/mwaskom/seaborn/master/doc/_static/logo-mark-lightbg.svg",
-    "Power BI": "https://api.iconify.design/logos/microsoft-power-bi.svg"
+    "Power BI": "https://api.iconify.design/logos/microsoft-power-bi.svg",
+    "Linux": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg",
+    "AWS": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg",
+    "Git": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg",
+    "GitHub": "https://cdn.simpleicons.org/github/white",
+    "Docker": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg",
+    "Kubernetes": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kubernetes/kubernetes-plain.svg"
   };
   return logos[skill];
 };
@@ -227,7 +239,7 @@ function SkillNode({ skill, color }: { skill: string, color: string }) {
           src={logoUrl} 
           alt={skill} 
           onError={() => setImgError(true)}
-          className="w-8 h-8 md:w-10 md:h-10 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-md" 
+          className={`w-8 h-8 md:w-10 md:h-10 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-md ${skill === 'AWS' ? 'invert opacity-90' : ''}`}
         />
       ) : (
         <div className="flex-1 w-full px-1 py-3 font-medium text-[9px] sm:text-[10px] md:text-xs text-[var(--color-text-primary)] group-hover:text-white transition-colors text-center whitespace-normal break-words leading-tight flex items-center justify-center">

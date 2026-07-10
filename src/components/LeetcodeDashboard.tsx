@@ -6,14 +6,14 @@ import { ExternalLink, Trophy, Flame, Target } from "lucide-react";
 export function LeetcodeDashboard() {
   // Real User Data
   const stats = {
-    totalSolved: 148,
+    totalSolved: 186,
     totalQuestions: 3962,
-    easy: { solved: 67, total: 950, color: "#00b8a3" },
-    medium: { solved: 74, total: 2069, color: "#ffc01e" },
-    hard: { solved: 7, total: 943, color: "#ff375f" },
-    globalRank: "1,091,442",
+    easy: { solved: 84, total: 950, color: "#00b8a3" },
+    medium: { solved: 92, total: 2069, color: "#ffc01e" },
+    hard: { solved: 10, total: 943, color: "#ff375f" },
+    globalRank: "875,910",
     contestRating: "N/A",
-    acceptanceRate: "70.2%",
+    acceptanceRate: "66.6%",
     streak: 0,
   };
 

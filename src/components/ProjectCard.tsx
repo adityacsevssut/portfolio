@@ -26,13 +26,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
   return (
     <div 
       className="card-container" 
-      onClick={() => setIsFlipped(!isFlipped)}
       style={{ '--project-color': project.color } as React.CSSProperties}
     >
       <div className={`card-content ${isFlipped ? 'flipped' : ''}`}>
         
         {/* Front Face (Initial View) */}
-        <div className="card-front">
+        <div className="card-front" onClick={() => setIsFlipped(true)} style={{ cursor: 'pointer' }}>
           <div className="card-front-content">
             <div className="card-header">
               <h3>{project.title}</h3>
@@ -60,32 +59,45 @@ export function ProjectCard({ project }: ProjectCardProps) {
               (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/121212/E5E7EB?text=Project+Image';
             }}
           />
-          <div className="card-back-content">
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-btn github"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FaGithub size={18} />
-              Code
-            </a>
-            <a
-              href={project.demo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-btn demo"
-              onClick={(e) => e.stopPropagation()}
-              style={{ boxShadow: `0 0 15px ${project.color}60` }}
-            >
-              <ExternalLink size={18} />
-              Live Demo
-            </a>
+          <div 
+            className="card-back-content" 
+            onClick={() => setIsFlipped(false)}
+          >
+            {/* Links moved outside 3D context to fix hit testing */}
           </div>
         </div>
 
       </div>
+
+      {/* RENDER LINKS OUTSIDE THE 3D CONTEXT! */}
+      {isFlipped && (
+        <div 
+          className="absolute inset-0 flex flex-col justify-center items-center gap-[20px] z-[100]" 
+          onClick={() => setIsFlipped(false)}
+        >
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link-btn github"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <FaGithub size={18} />
+            Code
+          </a>
+          <a
+            href={project.demo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link-btn demo"
+            onClick={(e) => e.stopPropagation()}
+            style={{ boxShadow: `0 0 15px ${project.color}60` }}
+          >
+            <ExternalLink size={18} />
+            Live Demo
+          </a>
+        </div>
+      )}
     </div>
   );
 }

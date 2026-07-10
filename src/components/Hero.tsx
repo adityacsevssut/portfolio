@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import { ErrorBoundary } from "./ErrorBoundary";
@@ -29,6 +29,9 @@ const HeroContent = () => {
   const fullCommand = "cout << WhoIsAditya ?? << endl;";
   const fullParagraph = "Hi! Everyone I'm Aditya Nahak, a passionate web developer and full-stack developer. I love building beautiful and functional web applications, with a strong foundation in DSA in C++ to solve complex problems efficiently.";
 
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true });
+
   // Title Typewriter State
   const titles = ["MERN Developer", "DSA Enthusiast", "ML Enthusiast"];
   const [titleIndex, setTitleIndex] = useState(0);
@@ -36,6 +39,8 @@ const HeroContent = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
+    if (!isInView) return;
+
     let typingSpeed = 100;
     if (isDeleting) typingSpeed = 50;
 
@@ -56,9 +61,11 @@ const HeroContent = () => {
     }, typingSpeed);
 
     return () => clearTimeout(timer);
-  }, [titleText, isDeleting, titleIndex]);
+  }, [titleText, isDeleting, titleIndex, isInView]);
 
   useEffect(() => {
+    if (!isInView) return;
+
     let i = 0;
     let cmdInterval: NodeJS.Timeout;
     let paraInterval: NodeJS.Timeout;
@@ -101,7 +108,7 @@ const HeroContent = () => {
       if (cmdInterval) clearInterval(cmdInterval);
       if (paraInterval) clearInterval(paraInterval);
     };
-  }, []);
+  }, [isInView]);
 
   return (
     <div className="relative w-full max-w-4xl flex flex-col items-center z-10 mt-2">
@@ -144,7 +151,7 @@ const HeroContent = () => {
           Contact Me
         </a>
         <a
-          href="/resume.pdf"
+          href="/Aditya%20Kumar%20Nahak.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="px-6 py-3 rounded-md bg-[var(--color-card-bg)] border border-[var(--color-text-secondary)] text-[var(--color-text-primary)] font-medium hover:bg-opacity-80 transition-all hover:border-white hover:-translate-y-1 hover:scale-105"
@@ -154,7 +161,7 @@ const HeroContent = () => {
       </motion.div>
 
       {/* Typing Effect */}
-      <div className="mt-12 mb-2 max-w-2xl w-[calc(100%-2rem)] mx-auto flex flex-col items-center text-center font-sans text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed text-[var(--color-text-primary)]">
+      <div ref={containerRef} className="mt-12 mb-2 max-w-2xl w-[calc(100%-2rem)] mx-auto flex flex-col items-center text-center font-sans text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed text-[var(--color-text-primary)]">
         <div className="mb-8 flex flex-col items-center justify-center gap-2">
           <div className="h-6 md:h-8 text-white font-mono text-base md:text-lg flex items-center justify-center">
             {text}
