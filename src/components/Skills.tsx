@@ -261,7 +261,6 @@ function Edge({ x1, y1, x2, y2, color, delay }: { x1: string, y1: string, x2: st
         initial={{ opacity: 1 }}
         animate={{ strokeDashoffset: [100, 0], opacity: 1 }}
         transition={{ duration: 1.5, delay, repeat: Infinity, ease: "linear" }}
-        style={{ filter: `drop-shadow(0px 0px 5px ${color})` }}
       />
     </g>
   );
