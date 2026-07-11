@@ -158,7 +158,7 @@ export function Certifications() {
                         {activeCert.footerText}
                       </span>
                       <a 
-                        href={activeCert.link}
+                        href={activeCert.link !== "#" ? activeCert.link : activeCert.image}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 text-sm font-bold text-[var(--color-accent-cyan)] hover:text-white transition-colors"

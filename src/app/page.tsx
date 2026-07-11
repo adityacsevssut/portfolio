@@ -3,6 +3,7 @@ import { Hero } from "@/components/Hero";
 import { ProfileSummary } from "@/components/ProfileSummary";
 import { About } from "@/components/About";
 import { Skills } from "@/components/Skills";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import dynamic from "next/dynamic";
 
 const SkillProgress = dynamic(() => import('@/components/SkillProgress').then(mod => mod.SkillProgress), { ssr: true });
@@ -31,6 +32,7 @@ export default function Home() {
       <Hobbies />
       <Contact />
       <Footer />
+      <ScrollToTop />
     </main>
   );
 }
