@@ -164,6 +164,19 @@ export function Skills() {
           ))}
         </div>
       </div>
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes strokeFlow {
+          from { stroke-dashoffset: 100; opacity: 1; }
+          to { stroke-dashoffset: 0; opacity: 1; }
+        }
+        .animate-stroke-flow {
+          animation: strokeFlow 1.5s linear infinite;
+        }
+        @keyframes rotation_481 {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}} />
     </section>
   );
 }
@@ -228,10 +241,9 @@ function SkillNode({ skill, color }: { skill: string, color: string }) {
   const logoUrl = getSkillLogo(skill);
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.1, boxShadow: `0 0 20px ${color}40` }}
+    <div
       title={skill}
-      className="flex flex-col items-center justify-center w-[60px] h-[60px] md:w-[80px] md:h-[80px] bg-[#121212] rounded-xl overflow-hidden group cursor-default transition-colors z-10 shadow-lg relative"
+      className="flex flex-col items-center justify-center w-[60px] h-[60px] md:w-[80px] md:h-[80px] bg-[#121212] rounded-xl overflow-hidden group cursor-default transition-all duration-300 hover:scale-110 z-10 shadow-lg relative"
       style={{ border: `2px solid ${color}` }}
     >
       {logoUrl && !imgError ? (
@@ -239,14 +251,14 @@ function SkillNode({ skill, color }: { skill: string, color: string }) {
           src={logoUrl} 
           alt={skill} 
           onError={() => setImgError(true)}
-          className={`w-8 h-8 md:w-10 md:h-10 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-md ${skill === 'AWS' ? 'invert opacity-90' : ''}`}
+          className={`w-8 h-8 md:w-10 md:h-10 object-contain group-hover:scale-110 transition-transform duration-300 ${skill === 'AWS' ? 'invert opacity-90' : ''}`}
         />
       ) : (
         <div className="flex-1 w-full px-1 py-3 font-medium text-[9px] sm:text-[10px] md:text-xs text-[var(--color-text-primary)] group-hover:text-white transition-colors text-center whitespace-normal break-words leading-tight flex items-center justify-center">
           {skill}
         </div>
       )}
-    </motion.div>
+    </div>
   );
 }
 
@@ -254,13 +266,12 @@ function Edge({ x1, y1, x2, y2, color, delay }: { x1: string, y1: string, x2: st
   return (
     <g>
       <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth="1.5" strokeOpacity="0.4" />
-      <motion.line
+      <line
         x1={x1} y1={y1} x2={x2} y2={y2}
         stroke={color} strokeWidth="3"
         strokeDasharray="8 12"
-        initial={{ opacity: 1 }}
-        animate={{ strokeDashoffset: [100, 0], opacity: 1 }}
-        transition={{ duration: 1.5, delay, repeat: Infinity, ease: "linear" }}
+        className="animate-stroke-flow"
+        style={{ animationDelay: `${delay}s` }}
       />
     </g>
   );
