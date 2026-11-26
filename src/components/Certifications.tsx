@@ -83,7 +83,7 @@ export function Certifications() {
   const activeCert = activeCertId ? certificatesData.find(c => c.id === activeCertId) : null;
 
   return (
-    <section id="certifications" className="py-20 bg-[#0A0A0A]/30">
+    <section id="certifications" className="py-20 bg-[#0A0A0A]/30 border-t border-[#262626]">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-16">
           <h2 className="text-[1.3rem] xs:text-2xl sm:text-3xl md:text-5xl font-bold font-mono text-[var(--color-text-primary)] break-all sm:break-normal">

@@ -74,7 +74,7 @@ export function About() {
              variants={containerVariants}
              initial="hidden"
              whileInView="visible"
-             viewport={{ once: true, amount: 0.2 }}
+             viewport={{ once: true, margin: "100px 0px 0px 0px", amount: "some" }}
              className="leading-relaxed min-w-[500px]"
           >
             <motion.div variants={lineVariants} className="flex gap-2 mb-4">

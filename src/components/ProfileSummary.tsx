@@ -27,7 +27,7 @@ export function ProfileSummary() {
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "150px 0px -20px 0px" });
 
   useEffect(() => {
     if (!isInView) return;
@@ -56,7 +56,7 @@ export function ProfileSummary() {
             setCurrentLineIndex(prev => prev + 1);
             setCurrentCharIndex(0);
           }
-        }, 30); // typing speed
+        }, 12); // swift typing speed
         
         return () => clearTimeout(timeout);
       }
@@ -64,7 +64,7 @@ export function ProfileSummary() {
   }, [currentLineIndex, currentCharIndex, isInView]);
 
   return (
-    <section className="pb-0 pt-4 relative flex justify-center px-6">
+    <section className="pb-0 pt-8 md:pt-12 relative flex justify-center px-6">
       <div 
         ref={ref}
         className="w-full max-w-3xl bg-[#0A0A0A]/80 backdrop-blur-xl border border-[#262626] rounded-lg overflow-hidden shadow-2xl relative"

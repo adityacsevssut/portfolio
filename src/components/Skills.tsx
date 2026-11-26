@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import React from "react";
+import { TypewriterHeading, TypewriterWords } from "./ScrollTypewriter";
 
 const skillCategories = [
   {
@@ -50,15 +51,21 @@ const skillCategories = [
 
 export function Skills() {
   return (
-    <section id="skills" className="relative pt-20 pb-10 border-t border-[#262626] overflow-hidden">
+    <section id="skills" className="relative pt-10 md:pt-14 pb-10 overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold font-mono text-[var(--color-text-primary)]">
-            Skills<span className="text-[var(--color-primary-neon)]">.BinaryTree()</span>
-          </h2>
-          <p className="text-[var(--color-text-secondary)] mt-4 font-mono max-w-2xl mx-auto">
-            {"// Hierarchical mapping of technical expertise"}
-          </p>
+          <TypewriterHeading
+            text="Skills.BinaryTree()"
+            tag="h2"
+            className="text-3xl md:text-5xl font-bold font-mono text-[var(--color-text-primary)]"
+            speed={30}
+          />
+          <TypewriterWords
+            text="// Hierarchical mapping of technical expertise"
+            className="text-[var(--color-text-secondary)] mt-4 font-mono max-w-2xl mx-auto"
+            startDelay={600}
+            speed={60}
+          />
         </div>
 
         <div className="flex flex-col gap-10 md:gap-16 max-w-5xl mx-auto items-center">

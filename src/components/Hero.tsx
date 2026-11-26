@@ -1,242 +1,344 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
-import { cn } from "@/lib/utils";
-import dynamic from "next/dynamic";
-import { ErrorBoundary } from "./ErrorBoundary";
-import { Suspense } from "react";
-import { TerminalHacker } from "./TerminalHacker";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useEffect, useState, useRef, useCallback } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
-const keywords = ["DFS()", "BFS()", "push()", "pop()", "O(log n)", "O(n)", "shift()"]; // Kept for reference but not rendered for performance
+/* ─────────────────────────────────────────
+   Blinking cursor
+───────────────────────────────────────── */
+const Cursor = ({ dim }: { dim?: boolean }) => (
+  <motion.span
+    animate={{ opacity: dim ? 0 : [1, 0] }}
+    transition={dim ? { duration: 0 } : { duration: 0.6, repeat: Infinity }}
+    className="inline-block w-[2px] h-[0.75em] bg-current ml-[2px] align-middle"
+  />
+);
 
-const renderHighlightedText = (text: string) => {
-  const parts = text.split(/(web developer|full-stack developer|DSA in C\+\+)/gi);
-  return parts.map((part, i) => {
-    if (/(web developer|full-stack developer|DSA in C\+\+)/i.test(part)) {
-      return <span key={i} className="text-[var(--color-primary-neon)] font-bold drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]">{part}</span>;
-    }
-    return <span key={i}>{part}</span>;
-  });
-};
+/* ─────────────────────────────────────────
+   Sequential hero typewriter state machine
+   phase 0 → greeting
+   phase 1 → "I'm Aditya Nahak"
+   phase 2 → role typewriter (continuous)
+   phase 3 → bio
+   phase 4 → show buttons + stats
+───────────────────────────────────────── */
+const greeting   = "Hello Everyone,";
+const nameStr    = "I'm Aditya Nahak";
+const bioStr     = "I build fast, clean web applications and enjoy solving hard algorithmic problems. Currently focused on full-stack development with the MERN stack and competitive programming in C++.";
+const titles     = ["MERN Developer", "DSA Enthusiast", "ML Enthusiast"];
 
-const HeroContent = () => {
-  const [text, setText] = useState("");
-  const [commandText, setCommandText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [paragraphText, setParagraphText] = useState("");
-  const fullText = "initializing developer profile...";
-  const fullCommand = "cout << WhoIsAditya ?? << endl;";
-  const fullParagraph = "Hi! Everyone I'm Aditya Nahak, a passionate web developer and full-stack developer. I love building beautiful and functional web applications, with a strong foundation in DSA in C++ to solve complex problems efficiently.";
+function useSequentialTypewriter() {
+  const [phase, setPhase]         = useState(0);
+  const [greet, setGreet]         = useState("");
+  const [name, setName]           = useState("");
+  const [bio, setBio]             = useState("");
+  const [bioDone, setBioDone]     = useState(false);
+  // role typewriter
+  const [roleIdx, setRoleIdx]     = useState(0);
+  const [roleText, setRoleText]   = useState("");
+  const [deleting, setDeleting]   = useState(false);
 
-  const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: true });
-
-  // Title Typewriter State
-  const titles = ["MERN Developer", "DSA Enthusiast", "ML Enthusiast"];
-  const [titleIndex, setTitleIndex] = useState(0);
-  const [titleText, setTitleText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-
+  // Phase 0 — greeting (one-time)
   useEffect(() => {
-    if (!isInView) return;
-
-    let typingSpeed = 100;
-    if (isDeleting) typingSpeed = 50;
-
-    const currentTitle = titles[titleIndex];
-
-    const timer = setTimeout(() => {
-      if (!isDeleting && titleText === currentTitle) {
-        setTimeout(() => setIsDeleting(true), 1500);
-      } else if (isDeleting && titleText === "") {
-        setIsDeleting(false);
-        setTitleIndex((prev) => (prev + 1) % titles.length);
-      } else {
-        const nextText = isDeleting
-          ? currentTitle.substring(0, titleText.length - 1)
-          : currentTitle.substring(0, titleText.length + 1);
-        setTitleText(nextText);
-      }
-    }, typingSpeed);
-
-    return () => clearTimeout(timer);
-  }, [titleText, isDeleting, titleIndex, isInView]);
-
-  useEffect(() => {
-    if (!isInView) return;
-
     let i = 0;
-    let cmdInterval: NodeJS.Timeout;
-    let paraInterval: NodeJS.Timeout;
-
-    const typingInterval = setInterval(() => {
-      if (i < fullText.length) {
-        setText(fullText.slice(0, i + 1));
-        i++;
-      } else {
-        clearInterval(typingInterval);
-
-        let k = 0;
-        cmdInterval = setInterval(() => {
-          if (k < fullCommand.length) {
-            setCommandText(fullCommand.slice(0, k + 1));
-            k++;
-          } else {
-            clearInterval(cmdInterval);
-            setIsLoading(true);
-
-            setTimeout(() => {
-              setIsLoading(false);
-              let j = 0;
-              paraInterval = setInterval(() => {
-                if (j < fullParagraph.length) {
-                  setParagraphText(fullParagraph.slice(0, j + 1));
-                  j++;
-                } else {
-                  clearInterval(paraInterval);
-                }
-              }, 20); // Fast typing for paragraph
-            }, 2000);
-          }
-        }, 50); // Fast typing for command
+    const id = setInterval(() => {
+      i++;
+      setGreet(greeting.slice(0, i));
+      if (i >= greeting.length) {
+        clearInterval(id);
+        setPhase(1);
       }
-    }, 50); // Fast typing for initial text
+    }, 45);
+    return () => clearInterval(id);
+  }, []);
 
-    return () => {
-      clearInterval(typingInterval);
-      if (cmdInterval) clearInterval(cmdInterval);
-      if (paraInterval) clearInterval(paraInterval);
-    };
-  }, [isInView]);
+  // Phase 1 — name (one-time, slower & deliberate)
+  useEffect(() => {
+    if (phase !== 1) return;
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setName(nameStr.slice(0, i));
+      if (i >= nameStr.length) {
+        clearInterval(id);
+        setPhase(2);
+      }
+    }, 70);
+    return () => clearInterval(id);
+  }, [phase]);
+
+  // Phase 2 — role (looping typewriter, runs continuously)
+  useEffect(() => {
+    if (phase < 2) return;
+    const current = titles[roleIdx];
+    const delay = !deleting && roleText === current ? 1200 : deleting ? 35 : 70;
+    const timer = setTimeout(() => {
+      if (!deleting && roleText === current) {
+        setDeleting(true);
+      } else if (deleting && roleText === "") {
+        setDeleting(false);
+        setRoleIdx(p => (p + 1) % titles.length);
+      } else {
+        setRoleText(deleting ? current.slice(0, roleText.length - 1) : current.slice(0, roleText.length + 1));
+      }
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [phase, roleText, deleting, roleIdx]);
+
+  // Phase 2 — bio (one-time, comfortable reading speed)
+  useEffect(() => {
+    if (phase !== 2) return;
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setBio(bioStr.slice(0, i));
+      if (i >= bioStr.length) {
+        clearInterval(id);
+        setBioDone(true);
+      }
+    }, 32);
+    return () => clearInterval(id);
+  }, [phase]);
+
+  return { phase, greet, name, roleText, bio, bioDone };
+}
+
+/* ─────────────────────────────────────────
+   3-D tilt card
+───────────────────────────────────────── */
+const TiltCard = ({ children }: { children: React.ReactNode }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const mx  = useMotionValue(0);
+  const my  = useMotionValue(0);
+  const sp  = { stiffness: 120, damping: 18 };
+  const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [10, -10]), sp);
+  const rotateY = useSpring(useTransform(mx, [-0.5, 0.5], [-10, 10]), sp);
+
+  const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    const r = ref.current.getBoundingClientRect();
+    mx.set((e.clientX - r.left) / r.width  - 0.5);
+    my.set((e.clientY - r.top)  / r.height - 0.5);
+  }, [mx, my]);
+
+  const onLeave = useCallback(() => { mx.set(0); my.set(0); }, [mx, my]);
 
   return (
-    <div className="relative w-full max-w-4xl flex flex-col items-center z-10 mt-2">
-      <TerminalHacker />
-      
-      {/* Root Node */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative px-8 md:px-12 py-4 bg-[var(--color-card-bg)] backdrop-blur-sm border border-[var(--color-primary-neon)] rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.35)] inline-flex justify-center w-fit"
-      >
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-wide text-[var(--color-primary-neon)] min-h-[40px] sm:min-h-[50px] md:min-h-[70px] flex items-center justify-center text-center whitespace-nowrap">
-          {titleText}
-          <motion.span
-            animate={{ opacity: [1, 0] }}
-            transition={{ duration: 0.8, repeat: Infinity }}
-            className="inline-block w-1 md:w-1.5 h-8 sm:h-10 md:h-12 bg-[var(--color-primary-neon)] ml-1 md:ml-2 align-middle rounded-sm"
-          />
-        </h1>
+    <div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} style={{ perspective: "900px" }}>
+      <motion.div style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}>
+        {children}
       </motion.div>
-
-      {/* CTA Buttons */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1 }}
-        className="flex flex-wrap justify-center gap-4 mt-12 z-20 relative"
-      >
-        <a
-          href="#projects"
-          className="px-6 py-3 rounded-md bg-[var(--color-primary-neon)] text-white font-medium hover:bg-opacity-80 transition-all shadow-[0_0_15px_rgba(239, 68, 68,0.5)] hover:shadow-[0_0_25px_rgba(239, 68, 68,0.8)] hover:-translate-y-1 hover:scale-105"
-        >
-          View Projects
-        </a>
-        <a
-          href="#contact"
-          className="px-6 py-3 rounded-md bg-transparent border border-[var(--color-accent-cyan)] text-[var(--color-accent-cyan)] font-medium hover:bg-[var(--color-accent-cyan)] hover:text-white transition-all shadow-none hover:shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:-translate-y-1 hover:scale-105"
-        >
-          Contact Me
-        </a>
-        <a
-          href="/Aditya%20Kumar%20Nahak.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-6 py-3 rounded-md bg-[var(--color-card-bg)] border border-[var(--color-text-secondary)] text-[var(--color-text-primary)] font-medium hover:bg-opacity-80 transition-all hover:border-white hover:-translate-y-1 hover:scale-105"
-        >
-          Resume
-        </a>
-      </motion.div>
-
-      {/* Typing Effect */}
-      <div ref={containerRef} className="mt-12 mb-2 max-w-2xl w-[calc(100%-2rem)] mx-auto flex flex-col items-center text-center font-sans text-xl md:text-2xl lg:text-3xl font-medium leading-relaxed text-[var(--color-text-primary)]">
-        <div className="mb-8 flex flex-col items-center justify-center gap-2">
-          <div className="h-6 md:h-8 text-white font-mono text-base md:text-lg flex items-center justify-center">
-            {text}
-            {text.length < fullText.length && (
-              <motion.span
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.8, repeat: Infinity }}
-                className="inline-block w-1.5 h-5 md:h-6 bg-[var(--color-primary-neon)] ml-1"
-              />
-            )}
-          </div>
-
-          {text.length === fullText.length && (
-            <div className="h-6 md:h-8 text-[var(--color-primary-neon)] font-mono text-base md:text-lg flex items-center justify-center">
-              {commandText}
-              {commandText.length < fullCommand.length && (
-                <motion.span
-                  animate={{ opacity: [1, 0] }}
-                  transition={{ duration: 0.8, repeat: Infinity }}
-                  className="inline-block w-1.5 h-5 md:h-6 bg-[var(--color-primary-neon)] ml-1"
-                />
-              )}
-            </div>
-          )}
-
-          {isLoading && (
-            <div className="h-6 md:h-8 flex items-center justify-center gap-3 text-[var(--color-accent-cyan)] font-mono text-base md:text-lg">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                className="w-4 h-4 border-2 border-t-[var(--color-primary-neon)] border-r-transparent border-b-[var(--color-primary-neon)] border-l-transparent rounded-full"
-              />
-              <span>loading...</span>
-            </div>
-          )}
-        </div>
-
-        {!isLoading && commandText.length === fullCommand.length && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="min-h-[160px] max-w-[320px] md:max-w-[650px] lg:max-w-[800px] mx-auto text-gray-300 leading-relaxed tracking-wide md:bg-[var(--color-card-bg)]/30 md:backdrop-blur-md md:px-10 md:py-8 md:rounded-2xl md:border md:border-[#262626]/50 md:shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-          >
-            {renderHighlightedText(paragraphText)}
-            {paragraphText.length < fullParagraph.length && (
-              <motion.span
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.8, repeat: Infinity }}
-                className="inline-block w-2 h-7 md:h-8 lg:h-9 bg-[var(--color-primary-neon)] ml-1 align-middle"
-              />
-            )}
-          </motion.div>
-        )}
-      </div>
     </div>
   );
 };
 
+/* ─────────────────────────────────────────
+   Minimal background
+───────────────────────────────────────── */
+const Background = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div
+      className="absolute -left-40 top-1/4 w-[520px] h-[520px] rounded-full"
+      style={{ background: "radial-gradient(circle, rgba(255,0,51,0.055) 0%, transparent 70%)" }}
+    />
+    <div
+      className="absolute inset-0"
+      style={{ background: "radial-gradient(ellipse at 60% 50%, transparent 55%, rgba(0,0,0,0.6) 100%)" }}
+    />
+  </div>
+);
+
+/* ─────────────────────────────────────────
+   Hero
+───────────────────────────────────────── */
 export function Hero() {
   const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const { phase, greet, name, roleText, bio, bioDone } = useSequentialTypewriter();
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return <section id="home" className="min-h-[calc(100vh-5rem)]" />;
+  }
 
   return (
-    <section id="home" className="relative flex flex-col items-center justify-center overflow-hidden pt-20 pb-0">
-      {/* Floating Keywords removed for performance optimization */}
+    <section
+      id="home"
+      className="relative flex items-center justify-center min-h-[calc(100vh-5rem)] overflow-hidden pt-6 pb-12 md:py-12"
+      style={{ isolation: "isolate" }}
+    >
+      <Background />
 
-      <HeroContent />
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-8 items-center">
+
+        {/* ── LEFT: sequential typewriter text ── */}
+        <div className="flex flex-col items-center md:items-start text-center md:text-left order-2 md:order-1">
+
+          {/* Phase 0 → greeting */}
+          <p className="text-base md:text-lg text-[var(--color-text-secondary)] font-normal mb-3 tracking-wide min-h-[1.6em]">
+            {greet}
+            {phase === 0 && <Cursor />}
+          </p>
+
+          {/* Phase 1 → name (we split "I'm " and "Aditya Nahak" for colour) */}
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-[1.08] mb-4 min-h-[2.5em]">
+            {(() => {
+              const full = name;
+              const split = "I'm ";
+              if (full.length <= split.length) {
+                return (
+                  <>
+                    <span className="text-white">{full}</span>
+                    {phase === 1 && <Cursor />}
+                  </>
+                );
+              }
+              const rest = full.slice(split.length); // "Aditya Nahak"
+              const aditya = "Aditya";
+              const space  = " ";
+              return (
+                <>
+                  <span className="text-white">{split}</span>
+                  {rest.length <= aditya.length
+                    ? <span className="text-[var(--color-primary-neon)]">{rest}</span>
+                    : <>
+                        <span className="text-[var(--color-primary-neon)]">{aditya}</span>
+                        <br />
+                        <span className="text-white">{rest.slice(aditya.length + space.length)}</span>
+                      </>
+                  }
+                  {phase === 1 && <Cursor />}
+                </>
+              );
+            })()}
+          </h1>
+
+          {/* Thin red underline — appears after name is done */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={phase >= 2 ? { scaleX: 1, opacity: 1 } : {}}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            style={{ originX: 0 }}
+            className="h-[3px] w-16 bg-[var(--color-primary-neon)] rounded-full mb-5 self-center md:self-start"
+          />
+
+          {/* Phase 2 → role typewriter */}
+          <div className="text-xl md:text-2xl font-medium mb-5 h-9 md:h-10 flex items-center text-[var(--color-text-secondary)]">
+            {phase >= 2 && (
+              <span>
+                <span className="text-[var(--color-primary-neon)]">{roleText}</span>
+                <Cursor dim={false} />
+              </span>
+            )}
+          </div>
+
+          {/* Phase 2 → bio typewriter (one-time) */}
+          <p className="text-[var(--color-text-secondary)] text-base leading-7 mb-8 max-w-[420px] min-h-[7rem]">
+            {bio}
+            {phase === 2 && !bioDone && <Cursor />}
+          </p>
+
+          {/* Buttons appear as bio types */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={phase >= 2 ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.4 }}
+            className="flex flex-wrap gap-3 justify-center md:justify-start"
+          >
+            <Link href="/projects">
+              <motion.span
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-block px-6 py-2.5 rounded-md text-sm font-semibold text-white"
+                style={{ background: "var(--color-primary-neon)" }}
+              >
+                View Projects
+              </motion.span>
+            </Link>
+            <Link href="/contact">
+              <motion.span
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-block px-6 py-2.5 rounded-md text-sm font-semibold"
+                style={{ border: "1px solid rgba(255,255,255,0.2)", color: "var(--color-text-primary)" }}
+              >
+                Contact Me
+              </motion.span>
+            </Link>
+            <motion.a
+              href="/Aditya%20Kumar%20Nahak.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="px-6 py-2.5 rounded-md text-sm font-semibold"
+              style={{ border: "1px solid rgba(255,255,255,0.1)", color: "var(--color-text-secondary)" }}
+            >
+              Resume ↗
+            </motion.a>
+          </motion.div>
+
+          {/* Stats */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={phase >= 2 ? { opacity: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="flex gap-10 mt-10 pt-8 border-t border-white/[0.06]"
+          >
+            {[
+              { value: "15+",   label: "Projects built" },
+              { value: "500+",  label: "DSA problems"   },
+              { value: "2 yrs", label: "Experience"     },
+            ].map((s) => (
+              <div key={s.label} className="flex flex-col gap-0.5">
+                <span className="text-2xl font-bold text-white">{s.value}</span>
+                <span className="text-xs text-[var(--color-text-secondary)]">{s.label}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* ── RIGHT: photo (person only, transparent background) ── */}
+        <motion.div
+          initial={{ opacity: 0, x: 60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+          className="order-1 md:order-2 flex justify-center md:justify-center"
+        >
+          <TiltCard>
+            <div className="relative flex items-center justify-center">
+              <div
+                className="absolute inset-4 rounded-full pointer-events-none blur-3xl opacity-35"
+                style={{ background: "radial-gradient(circle, rgba(255,0,51,0.38) 0%, transparent 70%)" }}
+              />
+              <motion.div
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="relative"
+              >
+                <Image
+                  src="/hero-aditya.webp"
+                  alt="Aditya Nahak — Developer"
+                  width={1054}
+                  height={1024}
+                  priority
+                  className="w-[300px] sm:w-[380px] md:w-[460px] lg:w-[500px] h-auto object-contain select-none"
+                  style={{ filter: "drop-shadow(0 24px 36px rgba(0,0,0,0.85)) contrast(1.03)" }}
+                />
+              </motion.div>
+            </div>
+          </TiltCard>
+        </motion.div>
+
+      </div>
+
+      {/* bottom fade */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.9))" }}
+      />
     </section>
   );
 }
-
-

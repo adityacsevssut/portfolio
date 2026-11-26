@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
+import { TypewriterHeading, TypewriterWords } from "./ScrollTypewriter";
 
 const experience = [
   {
@@ -26,15 +27,15 @@ const experience = [
 
 export function Experience() {
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section id="experience" className="relative pt-10 md:pt-14 pb-20 overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold font-mono text-[var(--color-text-primary)] leading-tight">
-            <span className="text-[var(--color-primary-neon)]">Queue</span>
-            <wbr />.enqueue(
-            <wbr />Experience
-            <wbr />);
-          </h2>
+          <TypewriterHeading
+            text="Queue.enqueue( Experience );"
+            tag="h2"
+            className="text-2xl sm:text-3xl md:text-5xl font-bold font-mono text-[var(--color-text-primary)] leading-tight"
+            speed={30}
+          />
         </div>
 
         <div className="max-w-2xl mx-auto relative">

@@ -1,24 +1,24 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, Mail } from "lucide-react";
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { Send } from "lucide-react";
 
 export function Contact() {
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
-
-  const nodes = [
-    { id: "github", icon: FaGithub, label: "GitHub", href: "#", angle: -45 },
-    { id: "linkedin", icon: FaLinkedin, label: "LinkedIn", href: "#", angle: -15 },
-    { id: "twitter", icon: FaTwitter, label: "Twitter", href: "#", angle: 15 },
-    { id: "email", icon: Mail, label: "Email", href: "#", angle: 45 },
-  ];
-
   return (
-    <section id="contact" className="pt-0 pb-20 relative overflow-hidden">
+    <section id="contact" className="pt-10 md:pt-16 pb-16 relative overflow-hidden flex-1 flex items-center">
       <div className="container mx-auto px-6 relative z-10 flex flex-col items-center justify-center">
-        
+        <div className="text-center mb-10 md:mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold font-mono text-white flex flex-wrap justify-center items-center gap-x-3">
+            <span className="text-[var(--color-primary-neon)]">await</span>
+            <span>connect(</span>
+            <span className="text-[var(--color-accent-cyan)]">&quot;Aditya&quot;</span>
+            <span>);</span>
+          </h2>
+          <p className="text-[var(--color-text-secondary)] mt-4 font-mono text-sm md:text-base">
+            {"//"} Send a message or open a collaboration thread
+          </p>
+        </div>
+
         {/* Terminal Contact Form */}
         <div className="w-full max-w-lg">
           <motion.div

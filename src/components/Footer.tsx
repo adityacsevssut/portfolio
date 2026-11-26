@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FaGithub, FaLinkedin, FaInstagram, FaTwitter } from "react-icons/fa";
 
 export function Footer() {
@@ -25,7 +26,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="relative bg-[#0A0A0A] border-t border-[var(--color-primary-neon)] py-10 mt-20">
+    <footer className="relative bg-[#0A0A0A] border-t border-[var(--color-primary-neon)] pt-10 pb-24 md:pb-10 mt-12 md:mt-20">
       {/* Neon Top Border Glow */}
       <div className="absolute top-0 left-0 right-0 h-px bg-[var(--color-primary-neon)] opacity-50 shadow-[0_0_15px_var(--color-primary-neon)]"></div>
       
@@ -57,12 +58,12 @@ export function Footer() {
           <div className="text-[var(--color-text-secondary)] font-sans text-xs opacity-50">
             © {new Date().getFullYear()} Aditya Nahak. All rights reserved.
           </div>
-          <a 
-            href="#home"
+          <Link 
+            href="/"
             className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-neon)] font-mono text-[10px] transition-colors border border-transparent hover:border-[var(--color-primary-neon)] px-2 py-0.5 rounded opacity-70"
           >
             cd /root
-          </a>
+          </Link>
         </div>
         
       </div>
