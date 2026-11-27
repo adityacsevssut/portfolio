@@ -98,7 +98,7 @@ const projects = [
     title: "Dynamic Calculator",
     image: "/calulator.jpg",
     description: "A Simple calculator Using Css Java Script And Html.",
-    tech: ["Html", "CSS", "Java SCript"],
+    tech: ["HTML", "CSS", "JavaScript"],
     demo: "https://calculator-three-chi-76.vercel.app/",
     github: "https://github.com/adityacsevssut",
     color: "#84cc16" // Lime
@@ -119,18 +119,18 @@ export function Projects() {
   return (
     <section id="projects" className="relative min-h-[calc(100vh-12rem)] pt-10 md:pt-14 pb-16 md:pb-20">
       <div className="container mx-auto px-4 sm:px-6 relative z-10 h-full flex flex-col">
-        <div className="text-center mb-16 md:mb-20">
+        <div className="text-center mb-12 md:mb-16">
           <h2 className="text-3xl md:text-5xl font-bold font-mono text-white flex flex-wrap justify-center items-center gap-x-3 md:gap-x-4">
             <span className="text-[var(--color-accent-cyan)] opacity-70">{"</>"}</span>
             <span><span className="text-[var(--color-accent-purple)]">const</span> myProjects</span>
             <span><span className="text-[var(--color-primary-neon)]">=</span> <span className="text-[var(--color-text-secondary)]">[]</span></span>
           </h2>
           <p className="text-[var(--color-text-secondary)] mt-4 font-mono max-w-2xl mx-auto">
-            {"// Click on a project card to flip and view links"}
+            {"// Selected web builds, UI clones & full-stack apps"}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-7 gap-y-10 w-full max-w-7xl mx-auto">
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

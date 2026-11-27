@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
 
 const geistSans = Geist({
@@ -35,10 +34,9 @@ export default function RootLayout({
     >
       <body className="min-h-screen flex flex-col text-[var(--foreground)] selection:bg-[#EF4444] selection:text-white">
         <Navbar />
-        <main className="flex-1 flex flex-col">
+        <main className="flex-1 flex flex-col pb-24 md:pb-8">
           {children}
         </main>
-        <Footer />
         <ScrollToTop />
       </body>
     </html>

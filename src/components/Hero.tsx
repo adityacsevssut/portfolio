@@ -154,14 +154,7 @@ const Background = () => (
    Hero
 ───────────────────────────────────────── */
 export function Hero() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
-
   const { phase, greet, name, roleText, bio, bioDone } = useSequentialTypewriter();
-
-  if (!mounted) {
-    return <section id="home" className="min-h-[calc(100vh-5rem)]" />;
-  }
 
   return (
     <section
@@ -319,7 +312,7 @@ export function Hero() {
                 className="relative"
               >
                 <Image
-                  src="/hero-aditya.webp"
+                  src="/hero-aditya.jpeg"
                   alt="Aditya Nahak — Developer"
                   width={1054}
                   height={1024}
